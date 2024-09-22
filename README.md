@@ -1,5 +1,5 @@
 # SCH-hud Reworked
-This is a reworked version of the SCH-hud addon. To install, place the SCH-hud folder in your Windower\addons directory. Load the addon by adding send_command('lua l sch-hud') to your Gearswap file when your main job or sub job is SCH. Don’t forget to unload SCH-hud when switching jobs by adding send_command('lua unload sch-hud') to your Gearswap as well.
+This is a reworked version of the SCH-hud addon. To install, place the Sch-Hud-Reworked folder in your Windower\addons directory. Load the addon by adding send_command('lua l Sch-Hud-Reworked') to your Gearswap file when your main job or sub job is SCH. Don’t forget to unload SCH-hud when switching jobs by adding send_command('lua unload Sch-Hud-Reworked') to your Gearswap as well.
 
 ```lua
 -- Function called during user setup at the start or after a job change
@@ -34,7 +34,7 @@ local iPosition_y = 1040
 ```
 Adjust these values to position the book where you want it on the screen.
 Then unload reload the addons In-game
-//lua reload Sch-hud
+//lua reload Sch-Hud-Reworked
 
 # Dark Arts:
 ![alt text](https://i.imgur.com/8rAO6CH.png)
