@@ -1,4 +1,7 @@
 # SCH-hud Reworked
+- First Thanks to neonrage for the original Addon sch-hud.
+- Original Link Here : https://github.com/neon-rage/sch-hud
+
 This is a reworked version of the SCH-hud addon. To install, place the Sch-Hud-Reworked folder in your Windower\addons directory. Load the addon by adding send_command('lua l Sch-Hud-Reworked') to your Gearswap file when your main job or sub job is SCH. Don’t forget to unload SCH-hud when switching jobs by adding send_command('lua unload Sch-Hud-Reworked') to your Gearswap as well.
 
 ```lua
