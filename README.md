@@ -7,7 +7,7 @@ function user_setup()
     -- Check if the player's main job is SCH (Scholar) or if their sub job is SCH and their sub job level is greater than 0
     if (player.main_job == 'SCH' or (player.sub_job == 'SCH' and player.sub_job_level > 0)) then
         -- If the player is SCH (as main or sub), load the "sch-hud" Lua script
-        send_command('lua l sch-hud')
+        send_command('lua l Sch-Hud-Reworked')
     end
     -- Calls a function to select the default macro book based on the sub-job
     select_default_macro_book()
@@ -15,7 +15,7 @@ end
 
 -- Handles the unload event when changing job or reloading the file.
 function file_unload()
-    send_command('lua unload sch-hud')
+    send_command('lua unload Sch-Hud-Reworked')
 end
 ```
 
