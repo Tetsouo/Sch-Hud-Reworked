@@ -46,6 +46,9 @@ Then unload reload the addons In-game
 # Addendum White:
 ![alt text](https://i.imgur.com/dxxXET8.png)
 
+# Exemple of render In-game:
+![alt text](https://i.imgur.com/ChfPOJc.png)
+
 # Changes in the Reworked Version:
 - Support for SCH as a sub job: The addon now works when SCH is your sub job, displaying the same HUD and functionality.
 - Improved Graphics: Enhanced book design, with distinct visual styles for Dark Arts (Necronomicon) and Light Arts (Altana Sun).
