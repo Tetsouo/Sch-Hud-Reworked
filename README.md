@@ -2,7 +2,7 @@
 - First Thanks to neonrage for the original Addon sch-hud.
 - Original Link Here : https://github.com/neon-rage/sch-hud
 
-This is a reworked version of the SCH-hud addon. To install, place the Sch-Hud-Reworked folder in your Windower\addons directory. Load the addon by adding send_command('lua l Sch-Hud-Reworked') to your Gearswap file when your main job or sub job is SCH. Don’t forget to unload SCH-hud when switching jobs by adding send_command('lua unload Sch-Hud-Reworked') to your Gearswap as well.
+This is a reworked version of the SCH-hud addon. To install, place the Sch-Hud-Reworked folder in your Windower\addons directory. Load the addon by adding send_command('lua load Sch-Hud-Reworked') to your Gearswap file when your main job or sub job is SCH.
 
 ```lua
 -- Function called during user setup at the start or after a job change
@@ -10,17 +10,14 @@ function user_setup()
     -- Check if the player's main job is SCH (Scholar) or if their sub job is SCH and their sub job level is greater than 0
     if (player.main_job == 'SCH' or (player.sub_job == 'SCH' and player.sub_job_level > 0)) then
         -- If the player is SCH (as main or sub), load the "sch-hud" Lua script
-        send_command('lua l Sch-Hud-Reworked')
+        send_command('lua load Sch-Hud-Reworked')
     end
     -- Calls a function to select the default macro book based on the sub-job
     select_default_macro_book()
 end
-
--- Handles the unload event when changing job or reloading the file.
-function file_unload()
-    send_command('lua unload Sch-Hud-Reworked')
-end
 ```
+
+This addon will automatically unload if neither your main job or subjob is SCH, so there's no need to manually handle the unload command in Gearswap.
 
 # Features:
 - The book changes to a Necronomicon style when Dark Arts is enabled and glows purple when Addendum: Black is active.
@@ -35,17 +32,20 @@ If you want to change the position of the book on your screen, open the SCH-hud.
 local iPosition_x = 800
 local iPosition_y = 1040
 ```
+
 Adjust these values to position the book where you want it on the screen.
 Then unload reload the addons In-game
 //lua reload Sch-Hud-Reworked
 
 # Dark Arts:
 ![alt text](https://i.imgur.com/8rAO6CH.png)
+
 # Addendum Black:
 ![alt text](https://i.imgur.com/SIti4Qg.png)
 
 # Light Arts:
 ![alt text](https://i.imgur.com/EOPaFdY.png)
+
 # Addendum White:
 ![alt text](https://i.imgur.com/dxxXET8.png)
 
