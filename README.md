@@ -78,9 +78,3 @@ Then reload the addons In-game
 
 # Exemple of render In-game:
 ![alt text](https://i.imgur.com/ChfPOJc.png)
-
-# Changes in the Reworked Version:
-- Support for SCH as a sub job: The addon now works when SCH is your sub job, displaying the same HUD and functionality.
-- Improved Graphics: Enhanced book design, with distinct visual styles for Dark Arts (Necronomicon) and Light Arts (Altana Sun).
-- Repositioned Stratagems and Timer: The number of available stratagems and the countdown timer have been adjusted to resemble page numbers in a book for a more immersive experience.
-- Customizable Book Position: You can now easily change the position of the book HUD on your screen by adjusting the iPosition_x and iPosition_y variables in the .lua file.
