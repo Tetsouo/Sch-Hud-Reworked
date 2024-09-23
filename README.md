@@ -3,7 +3,7 @@ SCH-Hud Reworked is an enhanced version of the original SCH-Hud addon created by
 
 # Original Credits:
 - Thanks to neonrage for the original SCH-Hud addon.
-- Original repository link: SCH-Hud
+- Original repository link: [SCH-Hud](https://github.com/neon-rage/sch-hud)
 
 # Base Features (from the original SCH-Hud):
 - The book interface visualizes stratagem information, with the left page displaying the number of available stratagems and the right page showing the recast timer for the next stratagem.
