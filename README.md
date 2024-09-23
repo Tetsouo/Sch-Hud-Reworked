@@ -1,40 +1,67 @@
 # SCH-hud Reworked
-- First Thanks to neonrage for the original Addon sch-hud.
-- Original Link Here : https://github.com/neon-rage/sch-hud
+SCH-Hud Reworked is an enhanced version of the original SCH-Hud addon created by neonrage. The addon displays a book on your screen, offering an immersive interface to track your stratagem charges and cooldown.
 
-This is a reworked version of the SCH-hud addon. To install, place the Sch-Hud-Reworked folder in your Windower\addons directory. Load the addon by adding send_command('lua load Sch-Hud-Reworked') to your Gearswap file when your main job or sub job is SCH.
+# Original Credits:
+- Thanks to neonrage for the original SCH-Hud addon.
+- Original repository link: SCH-Hud
 
-```lua
--- Function called during user setup at the start or after a job change
-function user_setup()
-    -- Check if the player's main job is SCH (Scholar) or if their sub job is SCH and their sub job level is greater than 0
-    if (player.main_job == 'SCH' or (player.sub_job == 'SCH' and player.sub_job_level > 0)) then
-        -- If the player is SCH (as main or sub), load the "sch-hud" Lua script
-        send_command('lua load Sch-Hud-Reworked')
-    end
-    -- Calls a function to select the default macro book based on the sub-job
-    select_default_macro_book()
-end
-```
+# Base Features (from the original SCH-Hud):
+- The book interface visualizes stratagem information, with the left page displaying the number of available stratagems and the right page showing the recast timer for the next stratagem.
+- The book changes color to purple when Dark Arts and add a purple glow when Addendum: Black is active.
+- The book changes color to white when Light Arts and add a white glow when Addendum: White is active.
+- Originally, the addon was designed to work only when SCH was your main job.
 
-This addon will automatically unload if neither your main job or subjob is SCH, so there's no need to manually handle the unload command in Gearswap.
+# New Features and Enhancements (in the Reworked Version):
+- Support for SCH as a Sub Job:
+The HUD now works when SCH is your sub job, displaying the same functionality as if SCH were your main job. This includes correctly handling stratagem charges and recast timers, based on the sub-job level and job points.
 
-# Features:
-- The book changes to a Necronomicon style when Dark Arts is enabled and glows purple when Addendum: Black is active.
-- The book changes to an Altana Sun style when Light Arts is enabled and glows yellow when Addendum: White is active.
-- The left page displays the number of Stratagems available.
-- If any stratagems are used, the right page shows a countdown until the next stratagem refresh.
+- Improved Graphics:
+We have completely revamped the visuals:
+Necronomicon style for Dark Arts, with a purple glow when Addendum: Black is active.
+Altana Sun style for Light Arts, with a yellow glow when Addendum: White is active.
+Visual elements were designed to be more immersive, with each mode resembling a distinct book style depending on which Arts are active.
+
+- Automatic Display Management:
+The addon now automatically manages the display of the book HUD based on whether your main or sub job is SCH.
+No more need for GearSwap integration to manually handle this, making the addon self-sufficient.
+
+- Odyssey Sheol Gaol Fix:
+The addon now properly handles situations in Odyssey Sheol Gaol where the sub job is set to 0. This ensures that no errors or incorrect HUD display occur when you have no sub job active in this zone.
+
+- Repositioned Stratagems and Timer:
+The number of stratagems and the cooldown timer have been adjusted and placed to resemble the numbering of pages in a book, creating a more immersive visual experience.
 
 # Customization:
-If you want to change the position of the book on your screen, open the SCH-hud.lua file in a text editor and adjust lines 10 and 11:
+You can adjust the position of the book on your screen by modifying the following lines in the Sch-Hud-Reworked.lua file:
 
 ```lua
 local iPosition_x = 800
 local iPosition_y = 1040
 ```
 
+# Installation:
+1 - Extract the Folder:
+Extract the Sch-Hud-Reworked folder into the following directory:
+windower/addons/
+
+2 - Add to init.txt:
+To ensure the addon loads automatically when you start Windower, add the following line to your init.txt file, located in:
+Windower/scripts/init.txt
+Add this line:
+lua load Sch-Hud-Reworked
+
+3 - Launch the Addon in-Game:
+If you prefer to manually launch the addon or if you didn't add it to your init.txt, you can also load it directly in-game by using the following command in the Windower console:
+//lua load Sch-Hud-Reworked
+or the shorter version:
+//lua l Sch-Hud-Reworked
+4 - Reload Addons:
+After making the changes, either restart Windower or use the in-game command:
+//lua reload Sch-Hud-Reworked
+This will ensure the SCH-Hud Reworked addon loads automatically every time you launch Windower.
+
 Adjust these values to position the book where you want it on the screen.
-Then unload reload the addons In-game
+Then reload the addons In-game
 //lua reload Sch-Hud-Reworked
 
 # Dark Arts:
