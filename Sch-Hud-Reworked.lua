@@ -1,6 +1,6 @@
 _addon.name = 'SCH-hud Reworked'
-_addon.author = 'Original NeoNRAGE / Reworked Tetsouo'
-_addon.version = '1.1'
+_addon.author = 'Original NeonRAGE / Reworked Tetsouo'
+_addon.version = '1.2'
 
 texts = require('texts')
 timer3 = texts.new("")
@@ -10,8 +10,17 @@ local position_x = 800
 local position_y = 1040
 local size_x = 200
 local size_y = 129
-local ODYSSEY_SHEOL_GAOL_ZONE_ID = 298 -- ID for Odyssey Sheol Gaol
-local SCH_JOB_ID = 20                  -- Constant for SCH job ID
+local SCH_JOB_ID = 20              -- Constant for SCH job ID
+local SJ_RESTRICTION_BUFF_ID = 157 -- SJ Restriction buff ID
+
+-- Odyssey Sheol Gaol and Dynamis sub job restricted zone IDs
+local restricted_zones = {
+	[298] = true, -- Odyssey Sheol Gaol
+	[39] = true, -- Dynamis - Valkurm
+	[40] = true, -- Dynamis - Buburimu
+	[41] = true, -- Dynamis - Qufim
+	[42] = true -- Dynamis - Tavnazia
+}
 
 -- Function to create texts on screen
 local function create_text(text, x, y, visible, alpha)
@@ -60,22 +69,85 @@ local function set_hud_visibility(visible)
 	texts.visible(stratcount, visible)
 end
 
+-- Check if the current zone has sub job restrictions
+local function is_zone_restricted(zone_id)
+	return restricted_zones[zone_id] or false
+end
+
+-- Function to check if the SJ Restriction buff is active
+local function is_sj_restricted()
+	local buffs = windower.ffxi.get_player().buffs
+	for _, buff in ipairs(buffs) do
+		if buff == SJ_RESTRICTION_BUFF_ID then
+			return true
+		end
+	end
+	return false
+end
+
 -- Function to update visibility based on job and zone
-local function update_visibility(main_job_id, sub_job_id, current_zone)
-	if current_zone == ODYSSEY_SHEOL_GAOL_ZONE_ID then
-		if main_job_id == SCH_JOB_ID then
-			set_hud_visibility(true)
-		else
+local function update_visibility(main_job_id, sub_job_id, sub_job_level, current_zone)
+	-- If main job is SCH, HUD should always be visible, skip further checks
+	if main_job_id == SCH_JOB_ID then
+		set_hud_visibility(true)
+		return
+	end
+
+	-- Check if the zone is restricted
+	if is_zone_restricted(current_zone) then
+		-- If sub job level is restricted (0), hide HUD
+		if sub_job_level == 0 then
 			set_hud_visibility(false)
+		else
+			-- Show HUD if sub job is SCH and not restricted
+			if sub_job_id == SCH_JOB_ID then
+				set_hud_visibility(true)
+			else
+				set_hud_visibility(false)
+			end
 		end
 	else
-		if main_job_id == SCH_JOB_ID or sub_job_id == SCH_JOB_ID then
+		-- In normal zones, show HUD if either main or sub job is SCH
+		if sub_job_id == SCH_JOB_ID then
 			set_hud_visibility(true)
 		else
 			set_hud_visibility(false)
 		end
 	end
 end
+
+-- Function to update HUD visibility based on SJ Restriction buff
+local function update_visibility_with_buff_check()
+	local player = windower.ffxi.get_player()
+	local current_zone = windower.ffxi.get_info().zone
+
+	-- If main job is SCH, skip all checks and show HUD
+	if player.main_job_id == SCH_JOB_ID then
+		set_hud_visibility(true)
+		return
+	end
+
+	-- Check for sub job restrictions if main job is not SCH
+	if is_sj_restricted() then
+		set_hud_visibility(false)
+	else
+		update_visibility(player.main_job_id, player.sub_job_id, player.sub_job_level or 0, current_zone)
+	end
+end
+
+
+-- Event registration for buffs change
+windower.register_event('gain buff', function(buff_id)
+	if buff_id == SJ_RESTRICTION_BUFF_ID then
+		update_visibility_with_buff_check()
+	end
+end)
+
+windower.register_event('lose buff', function(buff_id)
+	if buff_id == SJ_RESTRICTION_BUFF_ID then
+		update_visibility_with_buff_check()
+	end
+end)
 
 -- Event registration for loading the addon
 windower.register_event('load', function()
@@ -84,30 +156,22 @@ windower.register_event('load', function()
 	create_prim('grimoire-l', vGL, 'Grimoire-Light.png')
 	create_prim('grimoire-la', vGLA, 'Grimoire-LightAdd.png')
 
-	local player = windower.ffxi.get_player()
-	local current_zone = windower.ffxi.get_info().zone
-	update_visibility(player.main_job_id, player.sub_job_id, current_zone)
+	update_visibility_with_buff_check()
 end)
 
 -- Event registration for job change
 windower.register_event('job change', function(main_job_id)
-	local player = windower.ffxi.get_player()
-	local sub_job_id = player.sub_job_id
-	local current_zone = windower.ffxi.get_info().zone
-	update_visibility(main_job_id, sub_job_id, current_zone)
+	update_visibility_with_buff_check()
 end)
 
 -- Event registration for zone change
-windower.register_event('zone change', function(new_zone_id)
-	local player = windower.ffxi.get_player()
-	update_visibility(player.main_job_id, player.sub_job_id, new_zone_id)
+windower.register_event('zone change', function()
+	update_visibility_with_buff_check()
 end)
 
 -- Event registration for player login
 windower.register_event('login', function()
-	local player = windower.ffxi.get_player()
-	local current_zone = windower.ffxi.get_info().zone
-	update_visibility(player.main_job_id, player.sub_job_id, current_zone)
+	update_visibility_with_buff_check()
 end)
 
 -- Update HUD regularly
@@ -138,6 +202,12 @@ end
 -- HUD function to display stratagems
 function ability_hud()
 	local player = windower.ffxi.get_player()
+
+	-- Check if player is not nil (player is connected)
+	if not player then
+		return -- Exit the function if player is not available
+	end
+
 	local main_job = player.main_job
 	local sub_job = player.sub_job
 	local sch_jp = player.job_points and player.job_points.sch and player.job_points.sch.jp_spent or 0
